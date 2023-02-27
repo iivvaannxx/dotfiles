@@ -1,0 +1,16 @@
+{
+    
+    "description": "Custom and self-mantained 'manifest.json' file used to keep a list of all the installed plugins at any given time.",
+    "plugins": {
+
+        "fzf-fish": "https://github.com/PatrickF1/fzf.fish",
+        "autopair-fish": "https://github.com/jorgebucaran/autopair.fish",
+
+        "done": "https://github.com/franciscolourenco/done",
+        "sponge": "https://github.com/meaningful-ooo/sponge",
+
+        "getopts": "https://github.com/jorgebucaran/getopts.fish",
+        "replay": "https://github.com/jorgebucaran/replay.fish",
+        "fisher": "https://github.com/jorgebucaran/fisher"
+    }
+}

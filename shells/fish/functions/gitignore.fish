@@ -25,30 +25,44 @@ function gitignore
     end
 
 
-    # Prints the list of available templates for the given source.
-    function print_list 
+    function get_list
 
         set -l template_source $argv[1]
         set -l template_list ""
 
         if test "$template_source" = "gi"
 
-            echo -e "Available templates for gitignore.io:\n"
-            set group_by 8
-
             set template_list (curl -sL https://www.gitignore.io/api/list | sed 's/[,\n]/ /g')
 
         else if test "$template_source" = "ag"
-
-            echo -e "Available templates for api.github:\n"
-            set group_by 4
 
             set template_list (curl -sL https://api.github.com/gitignore/templates | sed 's/\]//g; s/\[//g; s/[,"]//g')
             set template_list (string replace -a "\n" " " "$template_list")
         end
 
-        set templates_list (string split -n " " "$template_list")
-        set -l template_count (count $templates_list)
+        echo $template_list
+    end
+
+
+    # Prints the list of available templates for the given source.
+    function print_list 
+
+        set -l template_source $argv[1]
+        set -l template_list (get_list $template_source)
+
+        if test "$template_source" = "gi"
+
+            echo -e "Available templates for gitignore.io:\n"
+            set group_by 8
+
+        else if test "$template_source" = "ag"
+
+            echo -e "Available templates for api.github:\n"
+            set group_by 4
+        end
+
+        set template_list (string split -n " " "$template_list")
+        set -l template_count (count $template_list)
         set -l current 1
 
         while test $current -le $template_count;
@@ -58,7 +72,7 @@ function gitignore
             test $end -gt $template_count; and set -l end $template_count
 
             # Create the slice.
-            set -l slice $templates_list[$current..$end]
+            set -l slice $template_list[$current..$end]
             echo -e "\t -" (string join -n " | " $slice)
 
             set current (math $current + $group_by)
@@ -71,16 +85,34 @@ function gitignore
         set -l result ""
         set -l templates $argv[3..-1]
 
+        set -l valid_templates (get_list $template_source)
+        set -l valid_templates (string split -n " " "$valid_templates")
+
         for template in $templates
 
-            echo -e "\r\tFetching template '$template'..."
+            set -l lower (string lower $template)
 
-            # Fetch the template from the correct source.
-            test "$template_source" = "gi"; and set -l current (curl -sL https://www.gitignore.io/api/$template | string join "\n")
-            test "$template_source" = "ag"; and set -l current (curl -sL https://api.github.com/gitignore/templates/$template | awk -F'"' '/source/ {print $4}')
+            if not contains $lower $valid_templates
 
-            # Append the template to the result.
-            set result "$result\n$current"
+                echo -e "\r\tThe '$lower' template is not valid. Skipping..."
+
+            else
+
+                echo -e "\r\tFetching template '$lower'..."
+
+                # Fetch the template from the correct source.
+                test "$template_source" = "gi"; and set -l current (curl -sL https://www.gitignore.io/api/$lower | string join "\n")
+                test "$template_source" = "ag"; and set -l current (curl -sL https://api.github.com/gitignore/templates/$lower | awk -F'"' '/source/ {print $4}')
+
+                # Append the template to the result.
+                set result "$result\n$current"
+            end
+        end
+
+        if test -z "$result"
+
+            echoerr "\r\tNo valid templates were given."
+            return 1
         end
 
 

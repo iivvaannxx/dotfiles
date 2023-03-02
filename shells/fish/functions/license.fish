@@ -1,6 +1,7 @@
 function license
 
     function print_help
+
         echo -e '  Usage: license <license>'
         echo -e '  Available licenses: \n'
 
@@ -9,6 +10,7 @@ function license
         end
 
         echo -ne '\n'
+        
     end
 
     echo -ne '\n'

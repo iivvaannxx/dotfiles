@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function gitignore
 
     # Prints the given message to stderr.

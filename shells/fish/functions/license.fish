@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function license
 
     # Prints the help message.

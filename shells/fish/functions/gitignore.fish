@@ -36,7 +36,7 @@ function gitignore
 
         else if test "$template_source" = "ag"
 
-            set template_list (curl -sL https://api.github.com/gitignore/templates | sed 's/\]//g; s/\[//g; s/[,"]//g')
+            set template_list (curl -sL https://api.github.com/gitignore/templates | jq -r '.[]')
             set template_list (string replace -a "\n" " " "$template_list")
         end
 
@@ -90,19 +90,16 @@ function gitignore
 
         for template in $templates
 
-            set -l lower (string lower $template)
+            if not contains $template $valid_templates
 
-            if not contains $lower $valid_templates
-
-                echo -e "\r\tThe '$lower' template is not valid. Skipping..."
-
+                echo -e "\r\tThe '$template' template is not valid. Skipping..."
             else
 
-                echo -e "\r\tFetching template '$lower'..."
+                echo -ne "\r\tFetching template '$template'..."
 
                 # Fetch the template from the correct source.
-                test "$template_source" = "gi"; and set -l current (curl -sL https://www.gitignore.io/api/$lower | string join "\n")
-                test "$template_source" = "ag"; and set -l current (curl -sL https://api.github.com/gitignore/templates/$lower | awk -F'"' '/source/ {print $4}')
+                test "$template_source" = "gi"; and set -l current (curl -sL https://www.gitignore.io/api/$template | string join "\n")
+                test "$template_source" = "ag"; and set -l current (curl -sL https://api.github.com/gitignore/templates/$template | jq -r '.source' | string join "\n")
 
                 # Append the template to the result.
                 set result "$result\n$current"
@@ -142,6 +139,12 @@ function gitignore
 
     tabs 4
     echo -ne "\n\t"
+
+    if not type -q jq
+
+        echo -e "'jq' is required to parse JSON output. Please install it first."
+        return 1
+    end
 
     # No arguments were given.
     if test (count $argv) -eq 0

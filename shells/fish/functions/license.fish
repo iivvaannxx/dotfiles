@@ -16,8 +16,14 @@ function license
     tabs 4
     echo -ne '\n'
 
+    if not type -q jq
+
+        echo -e "\t'jq' is required to parse JSON output. Please install it first."
+        return 1
+    end
+
     # Get the list of available licenses.
-    set -l licenses (curl -sL 'https://api.github.com/licenses' | awk -F ': ' '/"key"/{gsub(/[",]/,"");print $2}')
+    set -l licenses (curl -sL 'https://api.github.com/licenses' | jq -r '.[].key')
 
     # The function only allows one argument.
     if test (count $argv) -gt 1
@@ -37,13 +43,13 @@ function license
     else if test (count $argv) -eq 1 && contains (string lower $argv) $licenses
 
         set -l key (string lower $argv)
-        echo -e "\tGetting license '$key'..."
+        echo -ne "\tGetting license '$key'..."
 
         # Get the license text.
         set -l license (curl -sL https://api.github.com/licenses/$key | jq -r '.body' | string join "\n")
 
         # If bat is installed, use it to beautifully print the result.
-        if not type -q bat
+        if type -q bat
 
             echo -ne "\n"
             echo -e $license | bat -l md
@@ -51,7 +57,7 @@ function license
         # Otherwise just print the result.
         else
 
-            echo -e "\n$license"
+            echo -e "\n\n$license"
         end
         
         return 0

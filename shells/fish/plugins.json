@@ -1,6 +1,5 @@
 {
-    
-    "description": "Custom and self-mantained 'manifest.json' file used to keep a list of all the installed plugins at any given time.",
+    "description": "List of interesting fish plugins.",
     "plugins": {
 
         "fzf-fish": "https://github.com/PatrickF1/fzf.fish",

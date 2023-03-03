@@ -56,7 +56,6 @@ function license
 
         # Otherwise just print the result.
         else
-
             echo -e "\n\n$license"
         end
         

@@ -9,8 +9,6 @@ function license
         for license in $argv
             echo -e '\t  - ' $license
         end
-
-        echo -ne '\n'
     end
 
     tabs 4

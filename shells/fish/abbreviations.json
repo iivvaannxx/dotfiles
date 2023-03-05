@@ -1,0 +1,49 @@
+{
+    "v": "nvim",
+    "vi": "nvim",
+    "vim": "nvim",
+
+    "l": "ls",
+    "la": "ls -a",
+    "ll": "ls -la",
+    "lsl": "ls -l",
+    "lsc": "ls --color=auto",
+
+    "countf": "find . -type f | wc -l",
+    "countd": "find . -type d | wc -l",
+    "cpv": "rsync -ah --info=progress2",
+
+    "cd..": "cd ..",
+    "..": "cd ..",
+    "...": "cd ../..",
+    "....": "cd ../../..",
+
+    "grep": "grep --color=auto",
+    "hg":"history | grep",
+    "h": "history",
+    "c": "clear",
+    "cls": "clear",
+    "cp": "cp -i",
+    "rm": "rm -i",
+    "mv": "mv -i",
+    "mkdir": "mkdir -p",
+
+    "home": "cd ~",
+    ".dotfiles": "cd ~/.dotfiles",
+    ".config": "cd ~/.config",
+    ".local": "cd ~/.local",
+    ".nix-config": "cd ~/.nix-config",
+    "downloads": "cd ~/Downloads",
+    "documents": "cd ~/Documents",
+    "pictures": "cd ~/Pictures",
+    "music": "cd ~/Music",
+    "videos": "cd ~/Videos",
+    "projects": "cd ~/Projects",
+    "desktop": "cd ~/Desktop",
+
+    "trash": "mv --force -t ~/.local/share/Trash/files/",
+    "today": "date +%Y-%m-%d",
+    "now": "date +%Y-%m-%d_%H-%M-%S",
+
+    "mountls": "mount | column -t"
+}

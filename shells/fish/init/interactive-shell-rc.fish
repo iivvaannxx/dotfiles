@@ -8,7 +8,7 @@ set fish_greeting ""
 set abbreviations $HOME/.dotfiles/shells/fish/manifests/abbreviations.json
 
 # Abbreviations are loaded by default.
-if test -f "$abbreviations" -a type -q jq
+if test -f "$abbreviations" && type -q jq
 
     for abbrev in (jq -r 'to_entries[] | "\(.key) \(.value)"' "$abbreviations")
 

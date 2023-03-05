@@ -16,7 +16,7 @@ if test -f "$abbreviations" and type -q jq
         set -l value (echo $abbrev | cut -d' ' -f2-)
 
         if not abbr -q $key
-            abbr --add --global -- $key $value
+            abbr --add --global -- $key "\'$value\'"
         end
     end
 

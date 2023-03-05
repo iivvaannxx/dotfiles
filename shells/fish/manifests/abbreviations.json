@@ -5,6 +5,8 @@
     "gaa": "git add --all",
     "gcm": "git commit -m",
     "gam": "git add -all && git commit -m",
+    "gpl": "git pull",
+    "gps": "git push",
     "glog": "git log --oneline --decorate --graph --all",
     
     "v": "nvim",

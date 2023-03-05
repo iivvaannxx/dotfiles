@@ -1,5 +1,6 @@
 {
     "gco": "git checkout",
+    "gst": "git status",
     "gfc": "git fetch --all",
     "gad": "git add .",
     "gaa": "git add --all",

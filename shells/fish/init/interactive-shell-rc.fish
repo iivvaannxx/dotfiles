@@ -7,8 +7,8 @@ end
 set fish_greeting ""
 set abbreviations $HOME/.dotfiles/shells/fish/manifests/abbreviations.json
 
-# Abbreviations are loaded by default. Set the DO_NOT_LOAD_ABBREVIATIONS environment variable to disable this behaviour.
-if test -f "$abbreviations" and type -q jq and not $DO_NOT_LOAD_ABBREVIATIONS
+# Abbreviations are loaded by default.
+if test -f "$abbreviations" and type -q jq
 
     for abbrev in (jq -r 'to_entries[] | "\(.key) \(.value)"' "$abbreviations")
 
@@ -16,7 +16,7 @@ if test -f "$abbreviations" and type -q jq and not $DO_NOT_LOAD_ABBREVIATIONS
         set -l value (echo $abbrev | cut -d' ' -f2-)
 
         if not abbr -q $key
-            abbr --add --global -- $key "$value"
+            abbr --add --global -- $key $value
         end
     end
 
